@@ -1,0 +1,38 @@
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        l = len(s)
+        x = 0
+        for i in range(l):
+            if s[i] == 'I':
+                if i+1 < l:
+                    if s[i+1] == 'V' or s[i+1] == 'X':
+                        x = x - 1
+                    else:
+                        x = x + 1
+                else:
+                    x = x + 1
+            elif s[i] == 'V':
+                x = x + 5
+            elif s[i] == 'X':
+                if i+1 < l:
+                    if s[i+1] == 'L' or s[i+1] == 'C':
+                        x = x - 10
+                    else:
+                        x = x + 10
+                else:
+                    x = x + 10
+            elif s[i] == 'L':
+                x = x + 50
+            elif s[i] == 'C':
+                if i+1 < l:
+                    if s[i+1] == 'D' or s[i+1] == 'M':
+                        x = x - 100
+                    else:
+                        x = x + 100
+                else:
+                    x = x + 100
+            elif s[i] == 'D':
+                x = x + 500
+            else:
+                x = x + 1000
+        return x
