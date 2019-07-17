@@ -1,0 +1,14 @@
+class Solution:
+    def duplicateZeros(self, arr: List[int]) -> None:
+        """
+        Do not return anything, modify arr in-place instead.
+        """
+        l = len(arr)
+        k = 0
+        for i in range(l):
+            if k < l:
+                if arr[k] == 0:
+                    del arr[-1]
+                    arr.insert(k + 1, 0)
+                    k += 1
+            k += 1
