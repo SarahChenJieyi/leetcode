@@ -1,0 +1,55 @@
+class Solution:
+    """
+    @param org: a permutation of the integers from 1 to n
+    @param seqs: a list of sequences
+    @return: true if it can be reconstructed only one or false
+    """
+    def sequenceReconstruction(self, org, seqs):
+        # write your code here
+        #draw a graph
+        '''
+        the follow method can not use in this case
+        connect = {node: [] for node in org}
+        for seq in seqs:
+            for i in range(1, len(seq)):
+                connect[seq[i-1]].append(seq[i])
+        '''
+        connect = {}
+        for seq in seqs:
+            for x in seq:
+                if x not in connect:
+                    connect[x] = []
+        
+        for seq in seqs:
+            for i in range(1, len(seq)):
+                connect[seq[i-1]].append(seq[i])
+        
+        #indegree
+        indegree = {node: 0 for node in connect}
+        for node in connect:
+            for neighbor in connect[node]:
+                indegree[neighbor] += 1 
+                
+        #BFS
+        queue = []
+        for node in connect:
+            if indegree[node] == 0:
+                queue.append(node)
+        
+        order = []
+        while queue:
+            if len(queue) > 1:
+                return False
+            
+            node = queue.pop()
+            order.append(node)
+            for neighbor in connect[node]:
+                indegree[neighbor] -= 1
+                if indegree[neighbor] == 0:
+                    queue.append(neighbor)
+                    
+        #judge
+        if order == org:
+            return True
+        else:
+            return False
