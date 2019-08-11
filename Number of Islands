@@ -1,0 +1,39 @@
+from collections import deque
+
+class Solution:
+    """
+    @param grid: a boolean 2D matrix
+    @return: an integer
+    """
+    def numIslands(self, grid):
+        # write your code here
+        if not grid or not grid[0]:
+            return 0
+            
+        island = 0
+        visited = set()
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] and (i, j) not in visited:
+                    self.visit_whole_island(i, j, grid, visited)
+                    island += 1
+        return island
+        
+    def visit_whole_island(self, i, j, grid, visited):
+        visited.add((i, j))
+        queue = deque([(i, j)])
+        while queue:
+            cur_i, cur_j = queue.popleft()
+            for add_i, add_j in [(1, 0), (0, 1), (-1, 0), (0, -1)]:
+                next_i = cur_i + add_i
+                next_j = cur_j + add_j
+                if not self.is_vaild(next_i, next_j, grid, visited):
+                    continue
+                queue.append((next_i, next_j))
+                visited.add((next_i, next_j))
+                
+    def is_vaild(self, i, j, grid, visited):
+        if 0 <= i < len(grid) and 0 <= j < len(grid[0]) and grid[i][j] and (i, j) not in visited:
+            return 1 
+        else:
+            return 0
