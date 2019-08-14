@@ -1,0 +1,28 @@
+class Solution:
+    """
+    @param root: The root of binary tree.
+    @return: True if the binary tree is BST, or false
+    """
+    def isValidBST(self, root):
+        # write your code here
+        maxval, minval, isBST = self.helper(root)
+        return isBST
+        
+    def helper(self, root):
+        if root is None:
+            return None, None, True
+        
+        left_maxval, left_minval, left_isBST = self.helper(root.left)
+        right_maxval, right_minval, right_isBST = self.helper(root.right)
+        
+        if left_maxval is not None and left_maxval >= root.val:
+            return None, None, False
+        if right_minval is not None and right_minval <= root.val:
+            return None, None, False
+        if not left_isBST or not right_isBST:
+            return None, None, False
+        
+        maxval = right_maxval if right_maxval is not None else root.val 
+        minval = left_minval if left_minval is not None else root.val
+        
+        return maxval, minval, True
