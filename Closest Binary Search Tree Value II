@@ -1,0 +1,80 @@
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left, self.right = None, None
+"""
+
+class Solution:
+    """
+    @param root: the given BST
+    @param target: the given target
+    @param k: the given k
+    @return: k values in the BST that are closest to the target
+    """
+    def closestKValues(self, root, target, k):
+        # write your code here
+        if root is None:
+            return None
+        
+        #inital stack
+        stack = []
+        while root:
+            stack.append(root)
+            if root.val > target:
+                root = root.left
+            else:
+                root = root.right
+
+        #inital two point stacks        
+        lower_stack = stack
+        upper_stack = list(stack) #for deep copy
+        if lower_stack[-1].val < target:
+            self.upper_node(upper_stack)
+        else:
+            self.lower_node(lower_stack)
+        
+        #find k numbers from two point
+        result = []
+        for i in range(k):
+            if self.is_lower_closer(upper_stack, lower_stack, target):
+                result.append(lower_stack[-1].val)
+                self.lower_node(lower_stack)
+            else:
+                result.append(upper_stack[-1].val)
+                self.upper_node(upper_stack)
+                
+        return result
+                
+            
+    def is_lower_closer(self, upper_stack, lower_stack, target):
+        if not upper_stack:
+            return True
+        if not lower_stack:
+            return False
+        return abs(lower_stack[-1].val - target) < abs(upper_stack[-1].val - target) 
+        
+    def upper_node(self, stack):
+        node = stack[-1]
+        if node.right:
+            node = node.right
+            while node:
+                stack.append(node)
+                node = node.left
+        else:
+            node = stack.pop()
+            while stack and stack[-1].right == node:
+                node = stack.pop()
+    
+    def lower_node(self, stack):
+        node = stack[-1]
+        if node.left:
+            node = node.left
+            while node:
+                stack.append(node)
+                node = node.right
+        else:
+            node = stack.pop()
+            while stack and stack[-1].left == node:
+                node = stack.pop()
