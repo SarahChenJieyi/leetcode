@@ -1,0 +1,26 @@
+class Solution:
+    """
+    @param candidates: A list of integers
+    @param target: An integer
+    @return: A list of lists of integers
+    """
+    def combinationSum(self, candidates, target):
+        # write your code here
+        candidates = sorted(list(set(candidates)))
+        ans = []
+        self.dfs(candidates, target, ans, [], 0)
+        return ans
+        
+    def dfs(self, candidates, target, ans, sub, index):
+        # 递归的出口
+        if target == 0:
+            ans.append(sub[:])
+            return
+        # 递归的拆解
+        for i in range(index, len(candidates)):
+            # 这也是递归的出口
+            if target < candidates[i]:
+                return
+            sub.append(candidates[i])
+            self.dfs(candidates, target - candidates[i], ans, sub, i)
+            sub.pop()
