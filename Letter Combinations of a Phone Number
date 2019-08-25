@@ -1,0 +1,37 @@
+class Solution:
+    """
+    @param digits: A digital string
+    @return: all posible letter combinations
+    """
+    def letterCombinations(self, digits):
+        # write your code here
+        mapping = {
+            "2" : "abc", 
+            "3" : "def",
+            "4" : "ghi",
+            "5" : "jkl",
+            "6" : "mno",
+            "7" : "pqrs",
+            "8" : "tuv",
+            "9" : "wxyz"
+            }
+        
+        ans = []
+        if not digits:
+            return ans
+            
+        self.dfs(mapping, ans, digits, '', 0)
+        return ans
+        
+        # 递归的定义：
+        # 找到所有index开头的组合
+    def dfs(self, mapping, ans, digits, string, index):
+        # 递归的出口
+        if index == len(digits):
+            ans.append(string)
+            return
+        # 递归的拆解
+        for d in mapping[digits[index]]:
+            string = string + d
+            self.dfs(mapping, ans, digits, string, index + 1)
+            string = string[:-1]
